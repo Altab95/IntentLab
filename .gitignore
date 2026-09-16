@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Environment (secrets)
+.env
+.env.local
+
+# Build / logs
+dist/
+build/
+*.log
+.DS_Store
+
+# Vite
+frontend/dist/
