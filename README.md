@@ -1,34 +1,60 @@
 # IntentLab
 
-LLM-powered **ecommerce personalization rules engine** (take-home Option C).
+LLM-powered **Ecommerce Personalization Rules Engine** — Take-home Assignment (Option C).
 
-Paste or simulate a shopper event stream → classify into a state (`browser`, `comparer`, `discount_seeker`, `cart_abandoner`, `loyal_customer`) with **evidence**, **confidence**, and a **recommended on-site nudge**. Live simulator updates classification as you add/remove events.
+IntentLab analyzes a shopper's event stream and classifies their current shopping intent into one of five states:
 
-## How it works
+- `browser`
+- `comparer`
+- `discount_seeker`
+- `cart_abandoner`
+- `loyal_customer`
 
-1. **Signal extraction** (deterministic) — features and weighted evidence from the event stream (SKU revisits, promo attempts, checkout stall, loyalty markers, etc.).
-2. **LLM classification** (when `OPENAI_API_KEY` is set) — structured JSON judgment grounded in those signals + raw events.
-3. **Heuristic fallback** — same API works without a key so the demo never bricks.
+The system returns:
 
-This hybrid is intentional: models explain and adjudicate; code owns reliable feature evidence.
+- Intent classification
+- Confidence score
+- Evidence/signals behind the classification
+- Recommended on-site personalization nudge
 
-## Quick start
+It also includes a live event simulator that updates the shopper classification as events are added or removed.
 
-```bash
-# Backend
-cd backend
-cp .env.example .env
-# optional: add OPENAI_API_KEY=sk-...
-npm install
-npm run dev
+## How It Works
 
-# Frontend (new terminal)
-cd frontend
-npm install
-npm run dev
-```
+1. **Signal Extraction** — Deterministic feature extraction from shopper events.
+2. **LLM Classification** — Uses Google Gemini to classify shopper intent based on extracted signals and event context.
+3. **Heuristic Fallback** — If the LLM is unavailable or the API quota is exceeded, the application automatically falls back to the deterministic classifier.
 
-Open http://localhost:5173 — API proxies to http://localhost:3001.
+## Features
+
+- Five shopper intent states
+- LLM-powered classification
+- Deterministic signal extraction
+- Confidence scoring
+- Evidence-based classification
+- Personalized on-site nudges
+- Live event stream simulator
+- Add/remove shopper events
+- Automatic classification updates
+- Sample sessions
+- Graceful LLM fallback
+
+## Tech Stack
+
+### Frontend
+- React
+- Vite
+- JavaScript
+- CSS
+
+### Backend
+- Node.js
+- Express.js
+- REST API
+
+### AI
+- Google Gemini API
+- Gemini `gemini-3.6-flash`
 
 ## API
 
@@ -40,14 +66,25 @@ Open http://localhost:5173 — API proxies to http://localhost:3001.
 | POST | `/api/signals` | `{ events }` → features + heuristic |
 | POST | `/api/classify` | `{ events }` → state, evidence, nudge |
 
-## Product notes
+## Project Structure
 
-- Five seeded sessions map cleanly to each state for reviewer walkthrough.
-- **Live mode** debounces reclassification (~450ms) as the stream changes.
-- Nudges are concrete UI actions (compare strip, threshold progress, express checkout), not generic CRO advice.
-
-## Stack
-
-- Frontend: React + Vite
-- Backend: Express
-- LLM: OpenAI Chat Completions (`gpt-4o-mini` by default) with JSON mode
+```text
+IntentLab/
+├── backend/
+│   ├── src/
+│   │   ├── data/
+│   │   ├── routes/
+│   │   └── services/
+│   ├── .env.example
+│   ├── package.json
+│   └── package-lock.json
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── README.md
+└── .gitignore
